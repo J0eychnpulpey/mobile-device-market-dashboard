@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Device Market Analysis Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container-fluid">
+            <h1 class="dashboard-title">Mobile Device Market Analysis Dashboard</h1>
+            <div class="powered-by">
+                <span class="coder-emoji">👨‍💻</span>
+                <span class="powered-text">Powered by Codedex</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section class="overview-section">
+        <div class="container-fluid">
+            <div class="overview-card">
+                <h2>Overview</h2>
+                <p>Welcome to the Mobile Device Market Analysis Dashboard! 📱 This interactive platform provides deep insights into smartphone trends, pricing strategies, and market dynamics across different regions and manufacturers. Explore device specifications, compare prices across countries, analyze market segments, and discover patterns in smartphone evolution over time. Perfect for market researchers, product managers, and tech enthusiasts who want to understand the competitive landscape and make data-driven decisions in the mobile industry.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Panel -->
+    <section class="filter-section">
+        <div class="container-fluid">
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    <span class="active-filters-count" id="activeFiltersCount"></span>
+                </div>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="companyFilter">
+                            <i class="fas fa-building"></i> Company
+                            <span class="selected-count" id="companyCount"></span>
+                        </label>
+                        <select id="companyFilter" class="form-select" multiple>
+                            <option value="all" selected>All Companies</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="yearFilter">
+                            <i class="fas fa-calendar"></i> Launch Year
+                        </label>
+                        <div class="range-inputs">
+                            <div class="range-input-group">
+                                <input type="number" id="yearMinInput" min="2014" max="2025" value="2014" class="form-control range-input-value">
+                                <span class="range-separator">-</span>
+                                <input type="number" id="yearMaxInput" min="2014" max="2025" value="2025" class="form-control range-input-value">
+                            </div>
+                            <div class="range-slider-container">
+                                <input type="range" id="yearMinFilter" min="2014" max="2025" value="2014" class="form-range">
+                                <input type="range" id="yearMaxFilter" min="2014" max="2025" value="2025" class="form-range">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="priceFilter">
+                            <i class="fas fa-dollar-sign"></i> Price (USD)
+                        </label>
+                        <div class="range-inputs">
+                            <div class="range-input-group">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="priceMinInput" min="0" max="3000" value="0" step="50" class="form-control range-input-value">
+                                <span class="range-separator">-</span>
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="priceMaxInput" min="0" max="3000" value="3000" step="50" class="form-control range-input-value">
+                            </div>
+                            <div class="range-slider-container">
+                                <input type="range" id="priceMinFilter" min="0" max="3000" value="0" step="50" class="form-range">
+                                <input type="range" id="priceMaxFilter" min="0" max="3000" value="3000" step="50" class="form-range">
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="filter-group filter-actions">
+                        <button id="resetFilters" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reset All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPI Cards -->
+    <section class="kpi-section">
+        <div class="container-fluid">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="kpi-label">Total Devices</div>
+                    <div class="kpi-value kpi-green" id="totalDevices">0</div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="kpi-label">Unique Brands</div>
+                    <div class="kpi-value kpi-blue" id="uniqueBrands">0</div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="kpi-label">Median Launch Price</div>
+                    <div class="kpi-value kpi-purple" id="medianPrice">$0</div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="kpi-label">Most Common RAM</div>
+                    <div class="kpi-value kpi-pink" id="commonRAM">0GB</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-section">
+        <div class="container-fluid">
+            <!-- Processors Row -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Top 10 Processors by Device Count</h3>
+                    <div id="processorChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="processorInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Companies Row -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Top 10 Companies by Device Count</h3>
+                    <div id="companyChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="companyInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Trend Row -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Average Launched Price (USD) by Year</h3>
+                    <div id="priceTrendChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="priceTrendInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAM Distribution Row -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Distribution of RAM Sizes</h3>
+                        <div class="ram-filter-buttons">
+                            <button class="ram-btn active" data-ram="all">All</button>
+                        </div>
+                    </div>
+                    <div id="ramChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="ramInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Launches Row -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3 id="launchesChartTitle">Device Launches and Median Price (USA) by Year</h3>
+                    <div id="launchesChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="launchesInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Launches by Company and Battery Row -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3 id="launchesByCompanyTitle">Device Launches by Year and Company (Top 10 Companies)</h3>
+                    <p class="chart-description">💡 Click each company in the legend to interact and filter the data</p>
+                    <div id="launchesByCompanyChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="launchesByCompanyInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Top 10 Battery Capacities by Device Count</h3>
+                        <div class="sort-buttons">
+                            <button class="battery-sort-btn" data-sort="count-asc"><i class="fas fa-sort-numeric-up"></i> By Count (Low to High)</button>
+                            <button class="battery-sort-btn" data-sort="count-desc"><i class="fas fa-sort-numeric-down"></i> By Count (High to Low)</button>
+                        </div>
+                    </div>
+                    <div id="batteryChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="batteryInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Affordability vs Premium Row -->
+            <div class="chart-row" id="marketAffordabilityRow">
+                <div class="chart-container">
+                    <h3>Market Affordability vs Premium Analysis</h3>
+                    <p class="chart-description">📊 Analysis of price positioning across different markets</p>
+                    <div id="marketAffordabilityChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="marketAffordabilityInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Country Price Comparison Row -->
+            <div class="chart-row" id="countryPriceRow">
+                <div class="chart-container">
+                    <h3>Smartphone Prices Across Countries</h3>
+                    <p class="chart-description">🌍 Price comparison across different markets (all prices converted to USD equivalent)</p>
+                    <div id="countryPriceChart"></div>
+                </div>
+                <div class="insights-container">
+                    <h3>Key Insights</h3>
+                    <div id="countryPriceInsights" class="insights-content">
+                        <p>Loading insights...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <p><strong>Group Members:</strong><br>John Paul P., Ghaby G., Ainah P., Adrian S.</p>
+                <p><strong>Course:</strong> MO-IT117 A3101 - Data Visualization Techniques</p>
+            </div>
+            <p class="copyright">&copy; 2025 Mobile Device Market Analysis Dashboard</p>
+        </div>
+    </footer>
+
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    <!-- PapaParse -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/filters.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
